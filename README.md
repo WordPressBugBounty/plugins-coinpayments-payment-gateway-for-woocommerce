@@ -1,0 +1,1 @@
+# plugins-coinpayments-payment-gateway-for-woocommerce
