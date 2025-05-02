@@ -4,7 +4,7 @@ Donate link: https://gocps.net/3ncyzcq3sy0ww1rxghleip1aky/
 Tags: bitcoin, litecoin, altcoins, altcoin, dogecoin, feathercoin, netcoin, peercoin, blackcoin, darkcoin, ripple, ethereum, ether, woocommerce
 Requires at least: 3.7.0
 Tested up to: 6.2.2
-Stable tag: 1.0.17
+Stable tag: 1.0.18
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -24,11 +24,14 @@ This plugin implements a payment gateway for WooCommerce to let buyers pay with 
 
 == Changelog ==
 
+= 1.0.18 =
+* Fixed a potential security issue if an attacker had a copy of your IPN Secret they could send malicious requests. Your IPN Secret should never be shared with any 3rd parties.
+
 = 1.0.17 =
 * Fixed issue with missing the required permission_callback argument for register_rest_route function.
 
 = 1.0.16 =
-* Added supporting of Checkout Blocks.
+* Added support for Checkout Blocks.
 
 = 1.0.15 =
 * Updated WordPress compatibility tag.

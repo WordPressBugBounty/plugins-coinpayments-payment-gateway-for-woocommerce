@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
  * Description:  Provides a CoinPayments.net Payment Gateway.
  * Author: CoinPayments.net
  * Author URI: https://www.coinpayments.net/
- * Version: 1.0.17
+ * Version: 1.0.18
  * WC requires at least: 2.2
  * WC tested up to: 8.3
  */
@@ -20,7 +20,7 @@ if (!defined('ABSPATH')) exit; // Exit if accessed directly
  *
  * @class        WC_Coinpayments
  * @extends        WC_Gateway_Coinpayments
- * @version        1.0.17
+ * @version        1.0.18
  * @package        WooCommerce/Classes/Payment
  * @author        CoinPayments.net based on PayPal module by WooThemes
  */
@@ -253,7 +253,7 @@ function coinpayments_gateway_load() {
 
                 // Order key + ID
                 'invoice'     => $this->invoice_prefix . $order->get_order_number(),
-                'custom'      => serialize(array($order->get_id(), $order->get_order_key())),
+                'custom'      => json_encode(array($order->get_id(), $order->get_order_key())),
 
                 // IPN
                 'ipn_url'     => $this->ipn_url,
@@ -513,18 +513,11 @@ function coinpayments_gateway_load() {
          * @return void
          */
 	function get_coinpayments_order( $posted ) {
-            $custom = maybe_unserialize(stripslashes_deep($posted['custom']));
-
-            // Backwards comp for IPN requests
-            if (is_numeric($custom)) {
-                $order_id = (int)$custom;
-                $order_key = $posted['invoice'];
-            } elseif (is_string($custom)) {
-                $order_id = (int)str_replace($this->invoice_prefix, '', $custom);
-                $order_key = $custom;
-            } else {
-                list($order_id, $order_key) = $custom;
+            $custom = json_decode(stripslashes_deep($posted['custom']), TRUE);
+            if ($custom === FALSE || !is_array($custom) || count($custom) < 2) {
+                return FALSE;
             }
+            list($order_id, $order_key) = $custom;
 
             $order = wc_get_order($order_id);
 
